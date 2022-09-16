@@ -40,7 +40,7 @@ module.exports = {
             },
         ],
     },
-    plugins: [require("tailwindcss"), require("autoprefixer")],
+    plugins: [],
     resolve: {
         extensions: [".js"],
     },
