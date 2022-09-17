@@ -7,25 +7,29 @@ import { Settings } from "./views/Settings.js";
 import { Login } from "./views/Login.js";
 import { Register } from "./views/Register.js";
 import { Chat } from "./views/Chat.js";
+import { Provider } from "react-redux";
+import configureStore from "./store/index.js";
 
 export const App = () => {
     return (
-        <HashRouter>
-            <Navbar />
+        <Provider store={configureStore}>
+            <HashRouter>
+                <Navbar />
 
-            <div className="content-wrapper">
-                <Routes>
-                    <Route path="/settings" element={<Settings />} />
+                <div className="content-wrapper">
+                    <Routes>
+                        <Route path="/settings" element={<Settings />} />
 
-                    <Route path="/login" element={<Login />} />
+                        <Route path="/login" element={<Login />} />
 
-                    <Route path="/register" element={<Register />} />
+                        <Route path="/register" element={<Register />} />
 
-                    <Route path="/chat/:id" element={<Chat />} />
+                        <Route path="/chat/:id" element={<Chat />} />
 
-                    <Route path="/" element={<Home />} />
-                </Routes>
-            </div>
-        </HashRouter>
+                        <Route path="/" element={<Home />} />
+                    </Routes>
+                </div>
+            </HashRouter>
+        </Provider>
     );
 };
