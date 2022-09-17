@@ -1,8 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { applyMiddleware, configureStore } from "@reduxjs/toolkit";
 import chatReducer from "./chatSlice";
+import thunkMiddleware from "redux-thunk";
 
-export default configureStore({
-    reducer: {
-        chat: chatReducer,
+const middlewares = [thunkMiddleware];
+
+export default configureStore(
+    {
+        reducer: {
+            chats: chatReducer,
+        },
     },
-});
+    applyMiddleware(...middlewares)
+);

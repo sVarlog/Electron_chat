@@ -1,10 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 export const Navbar = () => {
     const navigate = useNavigate();
-    const data = useSelector((state) => state.chat);
 
     return (
         <div className="chat-navbar">
