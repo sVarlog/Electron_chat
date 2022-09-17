@@ -1,24 +1,24 @@
-import React from "react";
-import { AvailableChats } from "../components/AvailableChats";
-import { JoinedChats } from "../components/JoinedChats";
-import { Navbar } from "../components/Navbar";
+import React, { useEffect } from "react";
+import { fetchChats } from "../api/chats";
+import { AvailableChatsList } from "../components/AvailableChatsList";
+import { JoinedChatsList } from "../components/JoinedChatsList";
 import { ViewTitle } from "../components/shared/ViewTitle";
 
 export const Home = () => {
+    useEffect(() => {
+        fetchChats();
+    }, []);
+
     return (
-        <div className="content-wrapper">
-            <Navbar />
+        <div className="row no-gutters fh">
+            <div className="col-3 fh">
+                <JoinedChatsList />
+            </div>
 
-            <div className="row no-gutters fh">
-                <div className="col-3 fh">
-                    <JoinedChats />
-                </div>
+            <div className="col-9 fh">
+                <ViewTitle text={"Choose your channel"} />
 
-                <div className="col-9 fh">
-                    <ViewTitle />
-
-                    <AvailableChats />
-                </div>
+                <AvailableChatsList />
             </div>
         </div>
     );
