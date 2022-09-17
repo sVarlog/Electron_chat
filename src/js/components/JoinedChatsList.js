@@ -12,7 +12,7 @@ export const JoinedChatsList = () => {
             <ul className="items">
                 <li
                     onClick={() => {
-                        navigate("/chat");
+                        navigate("/chat/1");
                     }}
                     className="item"
                 >
@@ -30,7 +30,12 @@ export const JoinedChatsList = () => {
                     </p>
                 </li>
 
-                <li onClick={() => {}} className="item">
+                <li
+                    onClick={() => {
+                        navigate("/chat/2");
+                    }}
+                    className="item"
+                >
                     <div className="item-status">
                         <img
                             src="https://banner2.cleanpng.com/20180627/qvc/kisspng-the-legend-of-zelda-majora-s-mask-discord-compute-discord-icon-5b3371b7b55eb4.6840271215300981037429.jpg"
@@ -44,7 +49,12 @@ export const JoinedChatsList = () => {
                     </p>
                 </li>
 
-                <li onClick={() => {}} className="item">
+                <li
+                    onClick={() => {
+                        navigate("/chat/3");
+                    }}
+                    className="item"
+                >
                     <div className="item-status">
                         <img
                             src="https://banner2.cleanpng.com/20180627/qvc/kisspng-the-legend-of-zelda-majora-s-mask-discord-compute-discord-icon-5b3371b7b55eb4.6840271215300981037429.jpg"
@@ -58,7 +68,12 @@ export const JoinedChatsList = () => {
                     </p>
                 </li>
 
-                <li onClick={() => {}} className="item">
+                <li
+                    onClick={() => {
+                        navigate("/chat/4");
+                    }}
+                    className="item"
+                >
                     <div className="item-status">
                         <img
                             src="https://banner2.cleanpng.com/20180627/qvc/kisspng-the-legend-of-zelda-majora-s-mask-discord-compute-discord-icon-5b3371b7b55eb4.6840271215300981037429.jpg"
