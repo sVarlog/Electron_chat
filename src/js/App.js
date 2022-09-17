@@ -6,6 +6,7 @@ import { Navbar } from "./components/Navbar.js";
 import { Settings } from "./views/Settings.js";
 import { Login } from "./views/Login.js";
 import { Register } from "./views/Register.js";
+import { Chat } from "./views/Chat.js";
 
 export const App = () => {
     return (
@@ -19,6 +20,8 @@ export const App = () => {
                     <Route path="/login" element={<Login />} />
 
                     <Route path="/register" element={<Register />} />
+
+                    <Route path="/chat" element={<Chat />} />
 
                     <Route path="/" element={<Home />} />
                 </Routes>

@@ -77,7 +77,7 @@ export const Register = () => {
                 </form>
 
                 <small className="form-text text-muted mt-2">
-                    Not registered yet?
+                    Already registered?
                     <span onClick={() => {}} className="btn-link ml-2">
                         Register
                     </span>

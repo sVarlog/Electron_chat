@@ -1,6 +1,6 @@
 import React from "react";
 
-export const AvailableChats = () => {
+export const AvailableChatsList = () => {
     return (
         <div className="container-fluid">
             <div className="row mt-3">
