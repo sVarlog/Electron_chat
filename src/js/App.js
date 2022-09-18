@@ -4,8 +4,7 @@ import { Home } from "./views/Home.js";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/Navbar.js";
 import { Settings } from "./views/Settings.js";
-import { Login } from "./views/Login.js";
-import { Register } from "./views/Register.js";
+import { Welcome } from "./views/Welcome.js";
 import { Chat } from "./views/Chat.js";
 import { Provider } from "react-redux";
 import configureStore from "./store/index.js";
@@ -18,15 +17,13 @@ export const App = () => {
 
                 <div className="content-wrapper">
                     <Routes>
+                        <Route path="/" exact element={<Welcome />} />
+
+                        <Route path="/home" element={<Home />} />
+
                         <Route path="/settings" element={<Settings />} />
 
-                        <Route path="/login" element={<Login />} />
-
-                        <Route path="/register" element={<Register />} />
-
                         <Route path="/chat/:id" element={<Chat />} />
-
-                        <Route path="/" element={<Home />} />
                     </Routes>
                 </div>
             </HashRouter>

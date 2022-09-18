@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 export const JoinedChatsList = ({ chats }) => {
     const navigate = useNavigate();
 
-    console.log(chats, "chats");
-
     return (
         <div className="list-container">
             <ChatSearch />

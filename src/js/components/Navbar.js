@@ -27,14 +27,7 @@ export const Navbar = () => {
                     <span className="logged-in-user">Hi User</span>
 
                     <button
-                        onClick={() => navigate("/register")}
-                        className="btn btn-outline-danger ml-2"
-                    >
-                        Register
-                    </button>
-
-                    <button
-                        onClick={() => navigate("/login")}
+                        onClick={() => navigate("/")}
                         className="btn btn-outline-success ml-2"
                     >
                         Login
