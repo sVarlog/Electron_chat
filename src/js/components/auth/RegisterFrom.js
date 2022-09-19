@@ -9,7 +9,6 @@ export const RegisterForm = () => {
     const dispatch = useDispatch();
 
     const onSubmit = (registerData) => {
-        alert(JSON.stringify(registerData));
         dispatch(registerUser(registerData));
     };
 

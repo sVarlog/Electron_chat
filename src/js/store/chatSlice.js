@@ -7,6 +7,7 @@ export const chatSlice = createSlice({
     },
     reducers: {
         chatFetchSuccess: (state, action) => {
+            console.log("chat fetch");
             state.items = action.payload;
         },
     },
