@@ -12,20 +12,32 @@ export const authSlice = createSlice({
             return { user: null, isChecking: true };
         },
         authOnSuccess: (state, action) => {
-            console.log("auth success");
+            console.log("auth success", action);
             return { user: action.payload, isChecking: false };
         },
         authOnError: (state, action) => {
             console.log("auth error");
             return { user: null, isChecking: false };
         },
-        logoutSuccess: () => {
-            console.log("logout");
-            return {};
+        registerInit: (state, action) => {
+            console.log("register init");
+            return { ...state, isChecking: true };
         },
-        loginSuccess: () => {
+        registerSuccess: (state, action) => {
+            console.log("register success");
+            return { ...state, isChecking: false };
+        },
+        loginInit: (state, action) => {
+            console.log("login init");
+            return { ...state, isChecking: true };
+        },
+        loginSuccess: (state, action) => {
             console.log("login");
-            return {};
+            return { ...state, isChecking: false };
+        },
+        logoutSuccess: (state, action) => {
+            console.log("logout");
+            return { user: null, isChecking: false };
         },
     },
 });
@@ -36,6 +48,9 @@ export const {
     authOnError,
     logoutSuccess,
     loginSuccess,
+    registerInit,
+    registerSuccess,
+    loginInit,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { LoginForm } from "../components/auth/LoginForm";
 import { RegisterForm } from "../components/auth/RegisterFrom";
+import { LoadingView } from "../components/shared/LoadingView";
 
 export const Welcome = () => {
     const [isLoginView, setIsLoginView] = useState(true);
@@ -13,11 +14,8 @@ export const Welcome = () => {
         ? ["Not registered yet?", "Register"]
         : ["Already registered?", "Login"];
 
-    console.log(isChecking);
-    console.log(useSelector(({ auth }) => auth));
-
     if (isChecking) {
-        return <h1>Checking the state...</h1>;
+        return <LoadingView />;
     }
 
     if (user) {

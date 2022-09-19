@@ -3,13 +3,17 @@ import {
     authOnError,
     authOnInit,
     authOnSuccess,
+    loginInit,
     loginSuccess,
     logoutSuccess,
+    registerInit,
+    registerSuccess,
 } from "../store/authSlice";
 
-export const registerUser = (formData) => (dispatch) => {
-    api.registerUser(formData).then((user) => {
-        return user;
+export const registerUser = (formData) => async (dispatch) => {
+    dispatch(registerInit());
+    return api.registerUser(formData).then((user) => {
+        dispatch(registerSuccess());
     });
 };
 
@@ -17,8 +21,9 @@ export const logout = () => (dispatch) => {
     api.logout().then(() => dispatch(logoutSuccess));
 };
 
-export const loginUser = (formData) => (dispatch) => {
-    api.login(formData).then((_) => {
+export const loginUser = (formData) => async (dispatch) => {
+    dispatch(loginInit());
+    return api.login(formData).then((_) => {
         dispatch(loginSuccess());
     });
 };
@@ -26,9 +31,10 @@ export const loginUser = (formData) => (dispatch) => {
 export const listenToAuthChanges = () => (dispatch) => {
     console.log("auth on init");
     dispatch(authOnInit());
-    api.onAuthStateChanges((authUser) => {
+    api.onAuthStateChanges(async (authUser) => {
         if (authUser) {
-            dispatch(authOnSuccess(authUser));
+            const userProfile = await api.getUserProfile(authUser.uid);
+            dispatch(authOnSuccess(userProfile));
             console.log("we are authenticated");
         } else {
             dispatch(authOnError());

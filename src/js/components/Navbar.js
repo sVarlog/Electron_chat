@@ -9,6 +9,8 @@ export const Navbar = () => {
 
     const user = useSelector(({ auth }) => auth.user);
 
+    console.log(user);
+
     return (
         <div className="chat-navbar">
             <nav className="chat-navbar-inner">
@@ -29,8 +31,6 @@ export const Navbar = () => {
                 </div>
 
                 <div className="chat-navbar-inner-right">
-                    <span className="logged-in-user">Hi User</span>
-
                     {!user && (
                         <button
                             onClick={() => navigate("/")}
@@ -41,12 +41,20 @@ export const Navbar = () => {
                     )}
 
                     {user && (
-                        <button
-                            onClick={() => dispatch(logout())}
-                            className="btn btn-outline-danger ml-2"
-                        >
-                            Logout
-                        </button>
+                        <div className="user-wrapper">
+                            <span className="logged-in-user">
+                                Hi {user.username}
+                            </span>
+
+                            <img className="avatar" src={user.avatar} />
+
+                            <button
+                                onClick={() => dispatch(logout())}
+                                className="btn btn-outline-danger ml-2"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     )}
                 </div>
             </nav>
