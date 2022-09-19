@@ -28,6 +28,10 @@ export const logout = async () => {
     await firebase.auth().signOut();
 };
 
+export const login = async ({ email, password }) => {
+    await firebase.auth().signInWithEmailAndPassword(email, password);
+};
+
 export const onAuthStateChanges = (onAuth) => {
     firebase.auth().onAuthStateChanged(onAuth);
 };

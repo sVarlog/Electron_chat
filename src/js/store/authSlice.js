@@ -23,10 +23,19 @@ export const authSlice = createSlice({
             console.log("logout");
             return {};
         },
+        loginSuccess: () => {
+            console.log("login");
+            return {};
+        },
     },
 });
 
-export const { authOnInit, authOnSuccess, authOnError, logoutSuccess } =
-    authSlice.actions;
+export const {
+    authOnInit,
+    authOnSuccess,
+    authOnError,
+    logoutSuccess,
+    loginSuccess,
+} = authSlice.actions;
 
 export default authSlice.reducer;
