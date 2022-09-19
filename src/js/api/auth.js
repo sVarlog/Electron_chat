@@ -6,7 +6,7 @@ const createUserProfile = async (userProfile) => {
     await db.collection("profiles").doc(userProfile.uid).set(userProfile);
 };
 
-export const getUserProfile = (uid) => {
+export const getUserProfile = async (uid) => {
     return db
         .collection("profiles")
         .doc(uid)

@@ -5,6 +5,8 @@ export const authSlice = createSlice({
     initialState: {
         user: null,
         isChecking: true,
+        loginError: null,
+        registerError: null,
     },
     reducers: {
         authOnInit: (state, action) => {
@@ -21,19 +23,35 @@ export const authSlice = createSlice({
         },
         registerInit: (state, action) => {
             console.log("register init");
-            return { ...state, isChecking: true };
+            return { ...state, isChecking: true, registerError: null };
         },
         registerSuccess: (state, action) => {
             console.log("register success");
-            return { ...state, isChecking: false };
+            return { ...state, registerError: null };
+        },
+        registerError: (state, action) => {
+            console.log("register error");
+            return {
+                user: null,
+                isChecking: false,
+                registerError: action.payload,
+            };
         },
         loginInit: (state, action) => {
             console.log("login init");
-            return { ...state, isChecking: true };
+            return { ...state, isChecking: true, loginError: null };
         },
         loginSuccess: (state, action) => {
             console.log("login");
-            return { ...state, isChecking: false };
+            return { ...state, loginError: null };
+        },
+        loginError: (state, action) => {
+            console.log("login error");
+            return {
+                user: null,
+                isChecking: false,
+                loginError: action.payload,
+            };
         },
         logoutSuccess: (state, action) => {
             console.log("logout");
@@ -47,10 +65,12 @@ export const {
     authOnSuccess,
     authOnError,
     logoutSuccess,
-    loginSuccess,
     registerInit,
     registerSuccess,
+    registerError,
     loginInit,
+    loginSuccess,
+    loginError,
 } = authSlice.actions;
 
 export default authSlice.reducer;
