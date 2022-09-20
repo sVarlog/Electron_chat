@@ -1,9 +1,33 @@
 import * as api from "../api/chats";
 import { db } from "../db/firestore";
-import { chatCreateSuccess, chatFetchSuccess } from "../store/chatSlice";
+import {
+    chatCreateSuccess,
+    chatFetchInit,
+    chatFetchSuccess,
+} from "../store/chatSlice";
 
-export const fetchChats = () => async (dispatch) => {
-    return api.fetchChats().then((chats) => dispatch(chatFetchSuccess(chats)));
+export const fetchChats = () => async (dispatch, getState) => {
+    dispatch(chatFetchInit());
+    const { user } = getState().auth;
+    const chats = await api.fetchChats();
+
+    for (let chat of chats) {
+        chat.joinedUsers = chat.joinedUsers.map((user) => user.id);
+    }
+
+    const sortedChats = chats.reduce(
+        (accuChats, chat) => {
+            accuChats[
+                chat.joinedUsers.includes(user.uid) ? "joined" : "available"
+            ].push(chat);
+            return accuChats;
+        },
+        { joined: [], available: [] }
+    );
+
+    dispatch(chatFetchSuccess(sortedChats));
+
+    return sortedChats;
 };
 
 export const createChate = (formData, userId) => async (dispatch) => {

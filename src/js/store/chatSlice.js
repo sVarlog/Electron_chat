@@ -3,17 +3,29 @@ import { createSlice } from "@reduxjs/toolkit";
 export const chatSlice = createSlice({
     name: "chats",
     initialState: {
-        items: [],
+        joined: [],
+        available: [],
     },
     reducers: {
-        chatFetchSuccess: (state, action) => {
-            console.log("chat fetch");
-            return { items: action.payload };
+        chatFetchInit: (state, action) => {
+            return { joined: [], available: [] };
         },
-        chatCreateSuccess: (state, action) => {},
+        chatFetchSuccess: (state, action) => {
+            console.log("chat created", action);
+            const { available, joined } = action.payload;
+            return {
+                available,
+                joined,
+            };
+        },
+        chatCreateSuccess: (state, action) => {
+            console.log("chat created", action);
+            return { ...state };
+        },
     },
 });
 
-export const { chatFetchSuccess, chatCreateSuccess } = chatSlice.actions;
+export const { chatFetchSuccess, chatCreateSuccess, chatFetchInit } =
+    chatSlice.actions;
 
 export default chatSlice.reducer;

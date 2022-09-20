@@ -9,7 +9,8 @@ import { Notifications } from "../utils/notifications";
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const chats = useSelector(({ chats }) => chats.items);
+    const joined = useSelector(({ chats }) => chats.joined);
+    const available = useSelector(({ chats }) => chats.available);
 
     useEffect(() => {
         Notifications.setup();
@@ -20,13 +21,13 @@ export const Home = () => {
         <BaseLayout componentName={Home.name}>
             <div className="row no-gutters fh">
                 <div className="col-3 fh">
-                    <JoinedChatsList chats={chats} />
+                    <JoinedChatsList chats={joined} />
                 </div>
 
                 <div className="col-9 fh">
                     <ViewTitle text={"Choose your channel"} />
 
-                    <AvailableChatsList chats={chats} />
+                    <AvailableChatsList chats={available} />
                 </div>
             </div>
         </BaseLayout>
