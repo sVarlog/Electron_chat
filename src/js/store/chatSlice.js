@@ -32,6 +32,9 @@ export const chatSlice = createSlice({
                 joined,
             };
         },
+        chatSetActiveChat: (state, action) => {
+            console.log("chat set active chat", action.payload);
+        },
     },
 });
 
@@ -40,6 +43,7 @@ export const {
     chatCreateSuccess,
     chatFetchInit,
     chatJoinedSuccess,
+    chatSetActiveChat,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

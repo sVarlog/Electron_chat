@@ -5,6 +5,7 @@ import {
     chatFetchInit,
     chatFetchSuccess,
     chatJoinedSuccess,
+    chatSetActiveChat,
 } from "../store/chatSlice";
 
 export const fetchChats = () => async (dispatch, getState) => {
@@ -47,5 +48,12 @@ export const createChate = (formData, userId) => async (dispatch) => {
 export const joinChat = (chat, uid) => async (dispatch) => {
     return api.joinChat(uid, chat.id).then(() => {
         dispatch(chatJoinedSuccess(chat));
+    });
+};
+
+export const subscribeToChat = (chatId) => (dispatch) => {
+    api.subscribeToChat(chatId, (chat) => {
+        debugger;
+        dispatch(chatSetActiveChat(chat));
     });
 };
