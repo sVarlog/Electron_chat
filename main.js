@@ -39,7 +39,6 @@ ipcMain.on("app-quit", () => {
 
 app.on("window-all-closed", () => {
     if (process.platform === "darwin") {
-        console.log("close");
         app.quit();
     }
 });

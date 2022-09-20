@@ -1,31 +1,73 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Home } from "./views/Home.js";
 
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { Navbar } from "./components/Navbar.js";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Settings } from "./views/Settings.js";
-import { Login } from "./views/Login.js";
-import { Register } from "./views/Register.js";
+import { Welcome } from "./views/Welcome.js";
 import { Chat } from "./views/Chat.js";
+import { useDispatch, useSelector } from "react-redux";
+import { listenToAuthChanges } from "./actions/auth.js";
+import { StoreProvider } from "./store/StoreProvider.js";
 
-export const App = () => {
+function RequireAuth({ children }) {
+    const user = useSelector(({ auth }) => auth.user);
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+
+    return children;
+}
+
+const ChatApp = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(listenToAuthChanges());
+    }, []);
+
     return (
         <HashRouter>
-            <Navbar />
-
             <div className="content-wrapper">
                 <Routes>
-                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/login" exact element={<Welcome />} />
 
-                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/home"
+                        element={
+                            <RequireAuth>
+                                <Home />
+                            </RequireAuth>
+                        }
+                    />
 
-                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/settings"
+                        element={
+                            <RequireAuth>
+                                <Settings />
+                            </RequireAuth>
+                        }
+                    />
 
-                    <Route path="/chat/:id" element={<Chat />} />
-
-                    <Route path="/" element={<Home />} />
+                    <Route
+                        path="/chat/:id"
+                        element={
+                            <RequireAuth>
+                                <Chat />
+                            </RequireAuth>
+                        }
+                    />
                 </Routes>
             </div>
         </HashRouter>
+    );
+};
+
+export const App = () => {
+    return (
+        <StoreProvider>
+            <ChatApp />
+        </StoreProvider>
     );
 };
