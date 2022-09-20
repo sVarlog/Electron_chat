@@ -1,41 +1,63 @@
 import React, { useEffect } from "react";
 import { Home } from "./views/Home.js";
 
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { Navbar } from "./components/Navbar.js";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Settings } from "./views/Settings.js";
 import { Welcome } from "./views/Welcome.js";
 import { Chat } from "./views/Chat.js";
 import { useDispatch, useSelector } from "react-redux";
 import { listenToAuthChanges } from "./actions/auth.js";
 import { StoreProvider } from "./store/StoreProvider.js";
-import { LoadingView } from "./components/shared/LoadingView.js";
+
+function RequireAuth({ children }) {
+    const user = useSelector(({ auth }) => auth.user);
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+
+    return children;
+}
 
 const ChatApp = () => {
     const dispatch = useDispatch();
-    const isChecking = useSelector(({ auth }) => auth.isChecking);
 
     useEffect(() => {
         dispatch(listenToAuthChanges());
     }, []);
 
-    if (isChecking) {
-        return <LoadingView />;
-    }
-
     return (
         <HashRouter>
-            <Navbar />
-
             <div className="content-wrapper">
                 <Routes>
-                    <Route path="/" exact element={<Welcome />} />
+                    <Route path="/login" exact element={<Welcome />} />
 
-                    <Route path="/home" element={<Home />} />
+                    <Route
+                        path="/home"
+                        element={
+                            <RequireAuth>
+                                <Home />
+                            </RequireAuth>
+                        }
+                    />
 
-                    <Route path="/settings" element={<Settings />} />
+                    <Route
+                        path="/settings"
+                        element={
+                            <RequireAuth>
+                                <Settings />
+                            </RequireAuth>
+                        }
+                    />
 
-                    <Route path="/chat/:id" element={<Chat />} />
+                    <Route
+                        path="/chat/:id"
+                        element={
+                            <RequireAuth>
+                                <Chat />
+                            </RequireAuth>
+                        }
+                    />
                 </Routes>
             </div>
         </HashRouter>

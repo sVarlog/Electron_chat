@@ -5,23 +5,16 @@ import {
     authOnSuccess,
     loginError,
     loginInit,
-    loginSuccess,
     logoutSuccess,
     registerError,
     registerInit,
-    registerSuccess,
 } from "../store/authSlice";
 
 export const registerUser = (formData) => async (dispatch) => {
     dispatch(registerInit());
-    return api
-        .registerUser(formData)
-        .then((user) => {
-            dispatch(registerSuccess());
-        })
-        .catch((e) => {
-            dispatch(registerError(e));
-        });
+    return api.registerUser(formData).catch((e) => {
+        dispatch(registerError(e));
+    });
 };
 
 export const logout = () => (dispatch) => {
@@ -30,14 +23,9 @@ export const logout = () => (dispatch) => {
 
 export const loginUser = (formData) => async (dispatch) => {
     dispatch(loginInit());
-    return api
-        .login(formData)
-        .then((_) => {
-            dispatch(loginSuccess());
-        })
-        .catch((e) => {
-            dispatch(loginError(e));
-        });
+    return api.login(formData).catch((e) => {
+        dispatch(loginError(e));
+    });
 };
 
 export const listenToAuthChanges = () => (dispatch) => {

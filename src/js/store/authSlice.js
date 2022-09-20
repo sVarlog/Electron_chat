@@ -15,7 +15,12 @@ export const authSlice = createSlice({
         },
         authOnSuccess: (state, action) => {
             console.log("auth success", action);
-            return { user: action.payload, isChecking: false };
+            return {
+                user: action.payload,
+                isChecking: false,
+                loginError: null,
+                registerError: null,
+            };
         },
         authOnError: (state, action) => {
             console.log("auth error");
@@ -24,10 +29,6 @@ export const authSlice = createSlice({
         registerInit: (state, action) => {
             console.log("register init");
             return { ...state, isChecking: true, registerError: null };
-        },
-        registerSuccess: (state, action) => {
-            console.log("register success");
-            return { ...state, registerError: null };
         },
         registerError: (state, action) => {
             console.log("register error");
@@ -40,10 +41,6 @@ export const authSlice = createSlice({
         loginInit: (state, action) => {
             console.log("login init");
             return { ...state, isChecking: true, loginError: null };
-        },
-        loginSuccess: (state, action) => {
-            console.log("login");
-            return { ...state, loginError: null };
         },
         loginError: (state, action) => {
             console.log("login error");
@@ -66,10 +63,8 @@ export const {
     authOnError,
     logoutSuccess,
     registerInit,
-    registerSuccess,
     registerError,
     loginInit,
-    loginSuccess,
     loginError,
 } = authSlice.actions;
 

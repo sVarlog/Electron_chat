@@ -3,24 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../actions/auth";
 
-export const Navbar = () => {
+export const Navbar = ({ canGoBack }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const user = useSelector(({ auth }) => auth.user);
 
-    console.log(user);
-
     return (
         <div className="chat-navbar">
             <nav className="chat-navbar-inner">
                 <div className="chat-navbar-inner-left">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="btn btn-outline-primary"
-                    >
-                        Back
-                    </button>
+                    {canGoBack && (
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="btn btn-outline-primary"
+                        >
+                            Back
+                        </button>
+                    )}
 
                     <Link
                         to="/settings"
