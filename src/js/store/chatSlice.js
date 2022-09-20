@@ -8,24 +8,38 @@ export const chatSlice = createSlice({
     },
     reducers: {
         chatFetchInit: (state, action) => {
-            return { joined: [], available: [] };
+            return { ...state, joined: [], available: [] };
         },
         chatFetchSuccess: (state, action) => {
-            console.log("chat created", action);
             const { available, joined } = action.payload;
             return {
+                ...state,
                 available,
                 joined,
             };
         },
         chatCreateSuccess: (state, action) => {
-            console.log("chat created", action);
             return { ...state };
+        },
+        chatJoinedSuccess: (state, action) => {
+            const joined = state.joined.concat([action.payload]);
+            const available = state.available.filter(
+                (chat) => chat.id !== action.payload.id
+            );
+            return {
+                ...state,
+                available,
+                joined,
+            };
         },
     },
 });
 
-export const { chatFetchSuccess, chatCreateSuccess, chatFetchInit } =
-    chatSlice.actions;
+export const {
+    chatFetchSuccess,
+    chatCreateSuccess,
+    chatFetchInit,
+    chatJoinedSuccess,
+} = chatSlice.actions;
 
 export default chatSlice.reducer;

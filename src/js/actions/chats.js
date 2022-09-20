@@ -4,6 +4,7 @@ import {
     chatCreateSuccess,
     chatFetchInit,
     chatFetchSuccess,
+    chatJoinedSuccess,
 } from "../store/chatSlice";
 
 export const fetchChats = () => async (dispatch, getState) => {
@@ -38,6 +39,13 @@ export const createChate = (formData, userId) => async (dispatch) => {
     const chatId = await api.createChat(newChat);
     dispatch(chatCreateSuccess());
     await api.joinChat(userId, chatId);
+    dispatch(chatJoinedSuccess({ ...newChat, id: chatId }));
 
     return chatId;
+};
+
+export const joinChat = (chat, uid) => async (dispatch) => {
+    return api.joinChat(uid, chat.id).then(() => {
+        dispatch(chatJoinedSuccess(chat));
+    });
 };
