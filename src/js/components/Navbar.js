@@ -42,7 +42,7 @@ export const Navbar = ({ canGoBack, componentName }) => {
                                 Hi {user.username}
                             </span>
 
-                            <img className="avatar" src={user.avatar} />
+                            <img className="avatar ml-2" src={user.avatar} />
 
                             <button
                                 onClick={() => dispatch(logout())}

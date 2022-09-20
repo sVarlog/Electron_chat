@@ -8,11 +8,12 @@ export const chatSlice = createSlice({
     reducers: {
         chatFetchSuccess: (state, action) => {
             console.log("chat fetch");
-            state.items = action.payload;
+            return { items: action.payload };
         },
+        chatCreateSuccess: (state, action) => {},
     },
 });
 
-export const { chatFetchSuccess } = chatSlice.actions;
+export const { chatFetchSuccess, chatCreateSuccess } = chatSlice.actions;
 
 export default chatSlice.reducer;
