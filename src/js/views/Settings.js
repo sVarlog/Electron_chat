@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import { BaseLayout } from "../layouts/Base";
 
 export const Settings = () => {
     return (
-        <BaseLayout canGoBack>
+        <BaseLayout canGoBack componentName={Settings.name}>
             <div className="centered-view">
                 <div className="centered-container">
                     <form className="centered-container-form">

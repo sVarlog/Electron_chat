@@ -9,7 +9,7 @@ export const Chat = () => {
     const { id } = useParams();
 
     return (
-        <BaseLayout canGoBack>
+        <BaseLayout canGoBack componentName={Chat.name}>
             <div className="row no-gutters fh">
                 <div className="col-3 fh">
                     <ChatUsersList />

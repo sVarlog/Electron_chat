@@ -15,7 +15,7 @@ export const Home = () => {
     }, [dispatch]);
 
     return (
-        <BaseLayout>
+        <BaseLayout componentName={Home.name}>
             <div className="row no-gutters fh">
                 <div className="col-3 fh">
                     <JoinedChatsList chats={chats} />

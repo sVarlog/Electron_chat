@@ -2,10 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../actions/auth";
+import { BackButton } from "./shared/BackButton";
 
-export const Navbar = ({ canGoBack }) => {
+export const Navbar = ({ canGoBack, componentName }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    console.log("navbar name", componentName);
 
     const user = useSelector(({ auth }) => auth.user);
 
@@ -13,21 +15,16 @@ export const Navbar = ({ canGoBack }) => {
         <div className="chat-navbar">
             <nav className="chat-navbar-inner">
                 <div className="chat-navbar-inner-left">
-                    {canGoBack && (
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="btn btn-outline-primary"
-                        >
-                            Back
-                        </button>
-                    )}
+                    {canGoBack && <BackButton />}
 
-                    <Link
-                        to="/settings"
-                        className="btn btn-outline-success ml-2"
-                    >
-                        Settings
-                    </Link>
+                    {componentName !== "Settings" && (
+                        <Link
+                            to="/settings"
+                            className="btn btn-outline-success ml-2"
+                        >
+                            Settings
+                        </Link>
+                    )}
                 </div>
 
                 <div className="chat-navbar-inner-right">
