@@ -7,7 +7,6 @@ import { BackButton } from "./shared/BackButton";
 export const Navbar = ({ canGoBack, componentName }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log("navbar name", componentName);
 
     const user = useSelector(({ auth }) => auth.user);
 

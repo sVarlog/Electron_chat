@@ -8,6 +8,9 @@ import { Chat } from "./views/Chat.js";
 import { useDispatch, useSelector } from "react-redux";
 import { listenToAuthChanges } from "./actions/auth.js";
 import { StoreProvider } from "./store/StoreProvider.js";
+import { listenToConnectionChanges } from "./actions/app.js";
+import { LoadingView } from "./components/shared/LoadingView.js";
+import { ChatCreate } from "./views/ChatCreate.js";
 
 function RequireAuth({ children }) {
     const user = useSelector(({ auth }) => auth.user);
@@ -21,10 +24,21 @@ function RequireAuth({ children }) {
 
 const ChatApp = () => {
     const dispatch = useDispatch();
+    const isOnline = useSelector(({ app }) => app.isOnline);
 
     useEffect(() => {
-        dispatch(listenToAuthChanges());
-    }, []);
+        const unsubFromAuth = dispatch(listenToAuthChanges());
+        const unsubFromConnection = dispatch(listenToConnectionChanges());
+
+        return () => {
+            unsubFromAuth();
+            unsubFromConnection();
+        };
+    }, [dispatch]);
+
+    if (!isOnline) {
+        return <LoadingView />;
+    }
 
     return (
         <HashRouter>
@@ -33,7 +47,7 @@ const ChatApp = () => {
                     <Route path="/login" exact element={<Welcome />} />
 
                     <Route
-                        path="/home"
+                        path="/"
                         element={
                             <RequireAuth>
                                 <Home />
@@ -55,6 +69,15 @@ const ChatApp = () => {
                         element={
                             <RequireAuth>
                                 <Chat />
+                            </RequireAuth>
+                        }
+                    />
+
+                    <Route
+                        path="/chatCreate"
+                        element={
+                            <RequireAuth>
+                                <ChatCreate />
                             </RequireAuth>
                         }
                     />

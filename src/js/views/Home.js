@@ -5,12 +5,14 @@ import { ViewTitle } from "../components/shared/ViewTitle";
 import { fetchChats } from "../actions/chats";
 import { useDispatch, useSelector } from "react-redux";
 import { BaseLayout } from "../layouts/Base";
+import { Notifications } from "../utils/notifications";
 
 export const Home = () => {
     const dispatch = useDispatch();
     const chats = useSelector(({ chats }) => chats.items);
 
     useEffect(() => {
+        Notifications.setup();
         dispatch(fetchChats());
     }, [dispatch]);
 

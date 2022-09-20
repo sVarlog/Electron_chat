@@ -31,7 +31,7 @@ export const loginUser = (formData) => async (dispatch) => {
 export const listenToAuthChanges = () => (dispatch) => {
     console.log("auth on init");
     dispatch(authOnInit());
-    api.onAuthStateChanges(async (authUser) => {
+    return api.onAuthStateChanges(async (authUser) => {
         if (authUser) {
             const userProfile = await api.getUserProfile(authUser.uid);
             dispatch(authOnSuccess(userProfile));
