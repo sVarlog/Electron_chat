@@ -6,6 +6,7 @@ import {
     chatFetchSuccess,
     chatJoinedSuccess,
     chatSetActiveChat,
+    chatUpdateUserState,
 } from "../store/chatSlice";
 
 export const fetchChats = () => async (dispatch, getState) => {
@@ -52,8 +53,24 @@ export const joinChat = (chat, uid) => async (dispatch) => {
 };
 
 export const subscribeToChat = (chatId) => (dispatch) => {
-    api.subscribeToChat(chatId, (chat) => {
-        debugger;
+    return api.subscribeToChat(chatId, async (chat) => {
+        const joinedUsers = await Promise.all(
+            chat.joinedUsers.map(async (userRef) => {
+                const userSnapshot = await userRef.get();
+                return userSnapshot.data();
+            })
+        );
+
+        chat.joinedUsers = joinedUsers;
+
         dispatch(chatSetActiveChat(chat));
+    });
+};
+
+export const subscribeToProfile = (uid) => (dispatch) => {
+    return api.subscribeToProfile(uid, (user) => {
+        debugger;
+        console.log("changing profile");
+        dispatch(chatUpdateUserState(user));
     });
 };

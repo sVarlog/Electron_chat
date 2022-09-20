@@ -27,12 +27,12 @@ const ChatApp = () => {
     const isOnline = useSelector(({ app }) => app.isOnline);
 
     useEffect(() => {
-        const unsubFromAuth = dispatch(listenToAuthChanges());
-        const unsubFromConnection = dispatch(listenToConnectionChanges());
+        dispatch(listenToAuthChanges());
+        dispatch(listenToConnectionChanges());
 
         return () => {
-            unsubFromAuth();
-            unsubFromConnection();
+            dispatch(listenToAuthChanges());
+            dispatch(listenToConnectionChanges());
         };
     }, [dispatch]);
 
