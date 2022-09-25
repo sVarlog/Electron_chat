@@ -36,7 +36,10 @@ export const registerUser = async ({ email, password, username, avatar }) => {
 };
 
 export const logout = async () => {
-    await firebase.auth().signOut();
+    await firebase
+        .auth()
+        .signOut()
+        .then(() => firebase.disconnect());
 };
 
 export const login = async ({ email, password }) => {

@@ -1,6 +1,7 @@
 import { appOffline, appOnline } from "../store/appSlice";
 
 const onStatusChange = (dispatch) => {
+    console.log("status changed");
     const isOnline = window.navigator.onLine;
     const action = isOnline ? appOnline : appOffline;
 

@@ -24,7 +24,6 @@ export const Chat = () => {
     }, []);
 
     useEffect(() => {
-        debugger;
         joinedUsers && subscribeToJoinedUsers(joinedUsers);
     }, [joinedUsers]);
 
@@ -40,7 +39,6 @@ export const Chat = () => {
 
     const unsubFromJoinedUsers = () => {
         for (let id of Object.keys(peopleWatchers.current)) {
-            debugger;
             peopleWatchers.current[id]();
         }
     };

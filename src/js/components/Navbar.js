@@ -45,7 +45,7 @@ export const Navbar = ({ canGoBack, componentName }) => {
                             <img className="avatar ml-2" src={user.avatar} />
 
                             <button
-                                onClick={() => dispatch(logout())}
+                                onClick={() => dispatch(logout(user.uid))}
                                 className="btn btn-outline-danger ml-2"
                             >
                                 Logout

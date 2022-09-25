@@ -9,6 +9,7 @@ import {
     registerError,
     registerInit,
 } from "../store/authSlice";
+import { checkUserConnection } from "./connection";
 
 export const registerUser = (formData) => async (dispatch) => {
     dispatch(registerInit());
@@ -17,8 +18,16 @@ export const registerUser = (formData) => async (dispatch) => {
     });
 };
 
-export const logout = () => (dispatch) => {
-    api.logout().then(() => dispatch(logoutSuccess));
+export const logout = (uid) => async (dispatch) => {
+    console.log(uid);
+    await api
+        .logout()
+        .then(() => dispatch(logoutSuccess))
+        .then(() => {
+            console.log("unlogin");
+        });
+    console.log("await");
+    await dispatch(checkUserConnection(uid));
 };
 
 export const loginUser = (formData) => async (dispatch) => {
@@ -28,12 +37,15 @@ export const loginUser = (formData) => async (dispatch) => {
     });
 };
 
+let uid = "";
+
 export const listenToAuthChanges = () => (dispatch) => {
     console.log("auth on init");
     dispatch(authOnInit());
     return api.onAuthStateChanges(async (authUser) => {
         if (authUser) {
             const userProfile = await api.getUserProfile(authUser.uid);
+            uid = userProfile.uid;
             dispatch(authOnSuccess(userProfile));
             console.log("we are authenticated");
         } else {

@@ -11,6 +11,7 @@ import { StoreProvider } from "./store/StoreProvider.js";
 import { listenToConnectionChanges } from "./actions/app.js";
 import { LoadingView } from "./components/shared/LoadingView.js";
 import { ChatCreate } from "./views/ChatCreate.js";
+import { checkUserConnection } from "./actions/connection";
 
 function RequireAuth({ children }) {
     const user = useSelector(({ auth }) => auth.user);
@@ -25,8 +26,10 @@ function RequireAuth({ children }) {
 const ChatApp = () => {
     const dispatch = useDispatch();
     const isOnline = useSelector(({ app }) => app.isOnline);
+    const user = useSelector(({ auth }) => auth.user);
 
     useEffect(() => {
+        console.log(user, isOnline);
         dispatch(listenToAuthChanges());
         dispatch(listenToConnectionChanges());
 
@@ -35,6 +38,17 @@ const ChatApp = () => {
             dispatch(listenToConnectionChanges());
         };
     }, [dispatch]);
+
+    useEffect(() => {
+        let unsubFromUserConnection;
+        if (user?.uid) {
+            unsubFromUserConnection = dispatch(checkUserConnection(user.uid));
+        }
+
+        return () => {
+            unsubFromUserConnection && dispatch(checkUserConnection(user?.uid));
+        };
+    }, [dispatch, user]);
 
     if (!isOnline) {
         return <LoadingView />;
