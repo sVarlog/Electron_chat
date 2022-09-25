@@ -31,7 +31,7 @@ export const Chat = () => {
         for (let user of jUsers) {
             if (!peopleWatchers.current[user.uid]) {
                 peopleWatchers.current[user.uid] = dispatch(
-                    subscribeToProfile(user.uid)
+                    subscribeToProfile(user.uid, id)
                 );
             }
         }

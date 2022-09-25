@@ -23,13 +23,14 @@ function RequireAuth({ children }) {
     return children;
 }
 
+let userId = "";
+
 const ChatApp = () => {
     const dispatch = useDispatch();
     const isOnline = useSelector(({ app }) => app.isOnline);
     const user = useSelector(({ auth }) => auth.user);
 
     useEffect(() => {
-        console.log(user, isOnline);
         dispatch(listenToAuthChanges());
         dispatch(listenToConnectionChanges());
 
@@ -40,13 +41,15 @@ const ChatApp = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        let unsubFromUserConnection;
         if (user?.uid) {
-            unsubFromUserConnection = dispatch(checkUserConnection(user.uid));
+            userId = user.uid;
+            dispatch(checkUserConnection(userId, "online"));
         }
 
         return () => {
-            unsubFromUserConnection && dispatch(checkUserConnection(user?.uid));
+            console.log("offline", userId);
+            userId && dispatch(checkUserConnection(userId, "offline"));
+            userId = user ? user.uid : "";
         };
     }, [dispatch, user]);
 

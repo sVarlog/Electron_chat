@@ -67,10 +67,9 @@ export const subscribeToChat = (chatId) => (dispatch) => {
     });
 };
 
-export const subscribeToProfile = (uid) => (dispatch) => {
+export const subscribeToProfile = (uid, chatId) => (dispatch) => {
     return api.subscribeToProfile(uid, (user) => {
-        debugger;
-        console.log("changing profile");
-        dispatch(chatUpdateUserState(user));
+        console.log("changing profile", user);
+        dispatch(chatUpdateUserState({ user, chatId }));
     });
 };

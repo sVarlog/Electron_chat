@@ -34,12 +34,24 @@ export const chatSlice = createSlice({
             };
         },
         chatSetActiveChat: (state, action) => {
-            console.log("chat set active chat", action.payload);
             const chat = action.payload;
             const activeChats = { ...state.activeChats, [chat.id]: chat };
             return { ...state, activeChats };
         },
-        chatUpdateUserState: (state, action) => {},
+        chatUpdateUserState: (state, action) => {
+            const { user, chatId } = action.payload;
+            const joinedUsers = state.activeChats[chatId].joinedUsers;
+            const index = joinedUsers.findIndex((ju) => ju.uid === user.uid);
+
+            if (index < 0) {
+                return state;
+            }
+            if (joinedUsers[index].state === user.state) {
+                return state;
+            }
+
+            joinedUsers[index].state = user.state;
+        },
     },
 });
 

@@ -1,6 +1,11 @@
 import React from "react";
 
 export const ChatUsersList = ({ users = [] }) => {
+    console.log("USERS HERE =>");
+    users.forEach((el) => {
+        console.log(el);
+    });
+
     return (
         <div className="list-container">
             <div className="chat-search-box">
@@ -14,7 +19,7 @@ export const ChatUsersList = ({ users = [] }) => {
                     <li key={user.uid} className="item">
                         <div className="item-status">
                             <img src={user.avatar} alt="Retail Admin" />
-                            <span className="status online"></span>
+                            <span className={`status ${user.state}`}></span>
                         </div>
 
                         <p className="name-time">

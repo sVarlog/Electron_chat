@@ -2,38 +2,24 @@ import firebase from "firebase/app";
 import "firebase/database";
 import { db } from "../db/firestore";
 
-const getOnlineStatus = (isOnline) => {
+const getOnlineStatus = (onlineStatus) => {
     return {
-        state: isOnline ? "online" : "offline",
+        state: onlineStatus,
         lastChanged: firebase.firestore.FieldValue.serverTimestamp(),
     };
 };
 
-export const setUserOnlineStatus = (uid, isOnline) => {
+export const setUserOnlineStatus = (uid, onlineStatus) => {
     const userRef = db.doc(`/profiles/${uid}`);
-    return userRef.update(getOnlineStatus(isOnline));
+    return userRef.update(getOnlineStatus(onlineStatus));
 };
 
 export const onConnectionChanged = (onConnection) => {
     firebase
         .database()
-        .ref(".info/disconected")
-        .on("value", () => {
-            console.log("disconected");
-        });
-
-    firebase
-        .database()
         .ref(".info/connected")
         .on("value", (snapshot) => {
-            console.log("connection changed", snapshot, snapshot.val());
-            const isConnected = snapshot?.val() ? snapshot?.val() : false;
+            const isConnected = snapshot?.val() ? snapshot.val() : false;
             onConnection(isConnected);
         });
-    // .on("value", (value) => {
-    //     const con = myConnectionsRef.push();
-    //     con.onDisconnect().remove();
-
-    //     console.log("changed", value, value.val());
-    // });
 };

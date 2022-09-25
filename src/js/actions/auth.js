@@ -20,14 +20,7 @@ export const registerUser = (formData) => async (dispatch) => {
 
 export const logout = (uid) => async (dispatch) => {
     console.log(uid);
-    await api
-        .logout()
-        .then(() => dispatch(logoutSuccess))
-        .then(() => {
-            console.log("unlogin");
-        });
-    console.log("await");
-    await dispatch(checkUserConnection(uid));
+    api.logout().then(() => dispatch(logoutSuccess));
 };
 
 export const loginUser = (formData) => async (dispatch) => {
