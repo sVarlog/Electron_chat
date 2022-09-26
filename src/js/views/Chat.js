@@ -1,26 +1,39 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { ChatUsersList } from "../components/ChatUsersList";
 import { ChatMessagesList } from "../components/ChatMessagesList";
 import { ViewTitle } from "../components/shared/ViewTitle";
 import { BaseLayout } from "../layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
-import { subscribeToChat, subscribeToProfile } from "../actions/chats";
-import { LoadingView } from "../components/shared/LoadingView";
+import {
+    sendChatMessage,
+    subscribeToChat,
+    subscribeToMessages,
+    subscribeToProfile,
+} from "../actions/chats";
 import { Loader } from "../components/shared/Loader";
+import { Messanger } from "../components/Messanger";
 
 export const Chat = () => {
     const { id } = useParams();
     const peopleWatchers = useRef({});
     const dispatch = useDispatch();
     const activeChat = useSelector(({ chats }) => chats.activeChats[id]);
+    const messages = useSelector(({ chats }) => chats.messages[id]);
     const joinedUsers = activeChat?.joinedUsers;
 
+    const unsubFromJoinedUsers = () => {
+        for (let id of Object.keys(peopleWatchers.current)) {
+            peopleWatchers.current[id]();
+        }
+    };
+
     useEffect(() => {
-        dispatch(subscribeToChat(id));
+        const unsubFromChat = dispatch(subscribeToChat(id));
+        dispatch(subscribeToMessages(id));
 
         return () => {
-            dispatch(subscribeToChat(id));
+            unsubFromChat();
             unsubFromJoinedUsers();
         };
     }, []);
@@ -39,11 +52,12 @@ export const Chat = () => {
         }
     };
 
-    const unsubFromJoinedUsers = () => {
-        for (let id of Object.keys(peopleWatchers.current)) {
-            peopleWatchers.current[id]();
-        }
-    };
+    const sendMessage = useCallback(
+        (message) => {
+            dispatch(sendChatMessage(message, id));
+        },
+        [id]
+    );
 
     return (
         <BaseLayout canGoBack componentName={Chat.name}>
@@ -73,7 +87,10 @@ export const Chat = () => {
                             <ViewTitle
                                 text={`Channel: ${activeChat?.name || ""}`}
                             />
-                            <ChatMessagesList />
+
+                            <ChatMessagesList messages={messages || []} />
+
+                            <Messanger onSubmit={sendMessage} />
                         </>
                     )}
                 </div>

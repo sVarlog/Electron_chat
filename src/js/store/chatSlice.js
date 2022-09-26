@@ -5,7 +5,8 @@ export const chatSlice = createSlice({
     initialState: {
         joined: [],
         available: [],
-        activeChats: [],
+        activeChats: {},
+        messages: {},
     },
     reducers: {
         chatFetchInit: (state, action) => {
@@ -52,6 +53,22 @@ export const chatSlice = createSlice({
 
             joinedUsers[index].state = user.state;
         },
+        chatMessageSend: (state, action) => {
+            console.log("sended");
+        },
+        chatsSetMessages: (state, action) => {
+            const { chatId, chatMessages } = action.payload;
+            const prevMessages = state.messages[chatId] || [];
+            const messages = {
+                ...state.messages,
+                [chatId]: [...prevMessages, ...chatMessages],
+            };
+
+            return {
+                ...state,
+                messages,
+            };
+        },
     },
 });
 
@@ -62,6 +79,8 @@ export const {
     chatJoinedSuccess,
     chatSetActiveChat,
     chatUpdateUserState,
+    chatMessageSend,
+    chatsSetMessages,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

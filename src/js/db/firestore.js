@@ -14,4 +14,6 @@ const firebaseConfig = {
 
 const db = firebase.initializeApp(firebaseConfig).firestore();
 
-export { db };
+const { Timestamp } = firebase.firestore;
+
+export { db, Timestamp };

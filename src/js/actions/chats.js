@@ -5,7 +5,9 @@ import {
     chatFetchInit,
     chatFetchSuccess,
     chatJoinedSuccess,
+    chatMessageSend,
     chatSetActiveChat,
+    chatsSetMessages,
     chatUpdateUserState,
 } from "../store/chatSlice";
 
@@ -71,5 +73,43 @@ export const subscribeToProfile = (uid, chatId) => (dispatch) => {
     return api.subscribeToProfile(uid, (user) => {
         console.log("changing profile", user);
         dispatch(chatUpdateUserState({ user, chatId }));
+    });
+};
+
+export const sendChatMessage = (message, chatId) => (dispatch, getState) => {
+    const newMessage = { ...message };
+    const { user } = getState().auth;
+    const userRef = db.doc(`profiles/${user.uid}`);
+    newMessage.author = userRef;
+
+    return api
+        .sendChatMessage(newMessage, chatId)
+        .then(() => dispatch(chatMessageSend()));
+};
+
+export const subscribeToMessages = (chatId) => (dispatch) => {
+    return api.subscribeToMessages(chatId, async (changes) => {
+        const chatMessages = changes.map((change) => {
+            if (change.type === "added") {
+                return { id: change.doc.id, ...change.doc.data() };
+            }
+        });
+
+        const messagesWithAuthor = [];
+        const cache = {};
+
+        for await (let message of chatMessages) {
+            if (cache[message.author.id]) {
+                message.author = cache[message.author.id];
+            } else {
+                const userSnapshot = await message.author.get();
+                cache[userSnapshot.id] = userSnapshot.data();
+                message.author = cache[userSnapshot.id];
+            }
+            messagesWithAuthor.push(message);
+        }
+        return dispatch(
+            chatsSetMessages({ chatMessages: messagesWithAuthor, chatId })
+        );
     });
 };

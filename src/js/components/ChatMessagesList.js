@@ -1,82 +1,52 @@
 import React from "react";
 
-export const ChatMessagesList = () => {
+export const ChatMessagesList = ({ messages = [] }) => {
+    console.log(messages, "MESSAGE =>>>>>>>");
+    const getAuthorUsername = (username) => {
+        if (!username) return;
+
+        return username.length > 7 ? `${username.slice(0, 7)}..` : username;
+    };
+
     return (
         <div className="chat-container">
-            <ul className="chat-box chatContainerScroll">
-                <li className="chat-left">
-                    <div className="chat-avatar">
-                        <img
-                            src="https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png"
-                            alt="Retail Admin"
-                        />
+            <ul
+                className={`chat-box chatContainerScroll ${
+                    messages.length === 0 && "empty"
+                }`}
+            >
+                {messages.length > 0 ? (
+                    messages.map((message) => (
+                        <li className="chat-left" key={message.id}>
+                            <div className="chat-avatar">
+                                <img
+                                    src={message?.author.avatar}
+                                    alt="Retail Admin"
+                                />
 
-                        <div className="chat-name">Test User 1</div>
-                    </div>
+                                <div className="chat-name">
+                                    {getAuthorUsername(
+                                        message?.author.username
+                                    )}
+                                </div>
+                            </div>
 
-                    <div className="chat-text-wrapper">
-                        <span className="chat-text">Some message 1</span>
+                            <div className="chat-text-wrapper">
+                                <span className="chat-text">
+                                    {message.content}
+                                </span>
 
-                        <span className="chat-spacer"></span>
+                                <span className="chat-spacer"></span>
 
-                        <div className="chat-hour">5h ago</div>
-                    </div>
-                </li>
-
-                <li className="chat-right">
-                    <div className="chat-avatar">
-                        <img
-                            src="https://i.dlpng.com/static/png/7105396_preview.png"
-                            alt="Retail Admin"
-                        />
-                        <div className="chat-name">Test User 2</div>
-                    </div>
-
-                    <div className="chat-text-wrapper">
-                        <span className="chat-text">Some message 2</span>
-
-                        <span className="chat-spacer"></span>
-
-                        <div className="chat-hour">5h ago</div>
-                    </div>
-                </li>
-
-                <li className="chat-left">
-                    <div className="chat-avatar">
-                        <img
-                            src="https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png"
-                            alt="Retail Admin"
-                        />
-
-                        <div className="chat-name">Test User 3</div>
-                    </div>
-
-                    <div className="chat-text-wrapper">
-                        <span className="chat-text">Some message 3</span>
-
-                        <span className="chat-spacer"></span>
-
-                        <div className="chat-hour">5h ago</div>
-                    </div>
-                </li>
-
-                <li className="chat-right">
-                    <div className="chat-avatar">
-                        <img
-                            src="https://i.dlpng.com/static/png/7105396_preview.png"
-                            alt="Retail Admin"
-                        />
-                        <div className="chat-name">Test User 4</div>
-                    </div>
-
-                    <div className="chat-text-wrapper">
-                        <span className="chat-text">Some message 4</span>
-
-                        <span className="chat-spacer"></span>
-
-                        <div className="chat-hour">5h ago</div>
-                    </div>
-                </li>
+                                <div className="chat-hour">
+                                    {message.timestamp}
+                                </div>
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <p>There are any messages yet...</p>
+                )}
             </ul>
         </div>
     );
