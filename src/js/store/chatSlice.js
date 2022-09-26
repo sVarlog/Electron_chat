@@ -7,6 +7,7 @@ export const chatSlice = createSlice({
         available: [],
         activeChats: {},
         messages: {},
+        subscriptions: {},
     },
     reducers: {
         chatFetchInit: (state, action) => {
@@ -69,6 +70,11 @@ export const chatSlice = createSlice({
                 messages,
             };
         },
+        chatsRegisterMessageSub: (state, action) => {
+            const { chatId, sub } = action.payload;
+            const subscriptions = { ...state.subscriptions, [chatId]: sub };
+            return { ...state, subscriptions };
+        },
     },
 });
 
@@ -81,6 +87,7 @@ export const {
     chatUpdateUserState,
     chatMessageSend,
     chatsSetMessages,
+    chatsRegisterMessageSub,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

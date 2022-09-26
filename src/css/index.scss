@@ -321,7 +321,8 @@ textarea {
 }
 
 .chat-container li.chat-right > .chat-avatar {
-    margin-right: 20px;
+    margin-left: 20px;
+    order: 2;
 }
 
 .chat-container li .chat-name {

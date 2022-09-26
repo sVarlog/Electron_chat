@@ -13,13 +13,16 @@ import {
 } from "../actions/chats";
 import { Loader } from "../components/shared/Loader";
 import { Messanger } from "../components/Messanger";
+import { chatsRegisterMessageSub } from "../store/chatSlice";
 
 export const Chat = () => {
     const { id } = useParams();
     const peopleWatchers = useRef({});
+    const messageList = useRef();
     const dispatch = useDispatch();
     const activeChat = useSelector(({ chats }) => chats.activeChats[id]);
     const messages = useSelector(({ chats }) => chats.messages[id]);
+    const messagesSub = useSelector(({ chats }) => chats.subscriptions[id]);
     const joinedUsers = activeChat?.joinedUsers;
 
     const unsubFromJoinedUsers = () => {
@@ -30,7 +33,13 @@ export const Chat = () => {
 
     useEffect(() => {
         const unsubFromChat = dispatch(subscribeToChat(id));
-        dispatch(subscribeToMessages(id));
+
+        if (!messagesSub) {
+            const unsubFromMessages = dispatch(subscribeToMessages(id));
+            dispatch(
+                chatsRegisterMessageSub({ sub: unsubFromMessages, chatId: id })
+            );
+        }
 
         return () => {
             unsubFromChat();
@@ -54,7 +63,9 @@ export const Chat = () => {
 
     const sendMessage = useCallback(
         (message) => {
-            dispatch(sendChatMessage(message, id));
+            dispatch(sendChatMessage(message, id)).then(() =>
+                messageList.current.scrollIntoView(false)
+            );
         },
         [id]
     );
@@ -88,7 +99,10 @@ export const Chat = () => {
                                 text={`Channel: ${activeChat?.name || ""}`}
                             />
 
-                            <ChatMessagesList messages={messages || []} />
+                            <ChatMessagesList
+                                innerRef={messageList}
+                                messages={messages || []}
+                            />
 
                             <Messanger onSubmit={sendMessage} />
                         </>

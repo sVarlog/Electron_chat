@@ -95,21 +95,29 @@ export const subscribeToMessages = (chatId) => (dispatch) => {
             }
         });
 
-        const messagesWithAuthor = [];
         const cache = {};
 
-        for await (let message of chatMessages) {
-            if (cache[message.author.id]) {
-                message.author = cache[message.author.id];
-            } else {
-                const userSnapshot = await message.author.get();
-                cache[userSnapshot.id] = userSnapshot.data();
-                message.author = cache[userSnapshot.id];
-            }
-            messagesWithAuthor.push(message);
-        }
-        return dispatch(
+        const messagesWithAuthor = await Promise.all(
+            chatMessages.map(async (message) => {
+                if (cache[message.author.id]) {
+                    return (message.author = cache[message.author.id]);
+                } else {
+                    const userSnapshot = await message.author.get();
+                    cache[userSnapshot.id] = userSnapshot.data();
+                    message.author = cache[userSnapshot.id];
+                }
+                return message;
+            })
+        );
+
+        dispatch(
             chatsSetMessages({ chatMessages: messagesWithAuthor, chatId })
         );
     });
 };
+
+// export const registerMessageSubscription = (chatId, messageSub) => {
+//     return {
+
+//     }
+// }

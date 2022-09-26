@@ -55,7 +55,8 @@ export const sendChatMessage = (message, chatId) => {
 };
 
 export const subscribeToMessages = (chatId, onSubscribe) => {
-    db.collection("chats")
+    return db
+        .collection("chats")
         .doc(chatId)
         .collection("messages")
         .onSnapshot((snapshot) => onSubscribe(snapshot.docChanges()));
