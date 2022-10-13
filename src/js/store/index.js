@@ -1,16 +1,26 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import thunkMiddleware from "redux-thunk";
 import appMiddleware from "./middlewares/app";
 
 import chatReducer from "./chatSlice";
-import authReducer from "./authSlice";
+import authReducer, { logoutSuccess } from "./authSlice";
 import appReducer from "./appSlice";
 
+const mainReducer = combineReducers({
+    chats: chatReducer,
+    auth: authReducer,
+    app: appReducer,
+});
+
+const rootReducer = (state, action) => {
+    if (action.type === logoutSuccess().type) {
+        state = undefined;
+    }
+
+    return mainReducer(state, action);
+};
+
 export default configureStore({
-    reducer: {
-        chats: chatReducer,
-        auth: authReducer,
-        app: appReducer,
-    },
+    reducer: rootReducer,
     middleware: [thunkMiddleware, appMiddleware],
 });

@@ -9,7 +9,6 @@ import {
     registerError,
     registerInit,
 } from "../store/authSlice";
-import { checkUserConnection } from "./connection";
 
 export const registerUser = (formData) => async (dispatch) => {
     dispatch(registerInit());
@@ -19,8 +18,9 @@ export const registerUser = (formData) => async (dispatch) => {
 };
 
 export const logout = (uid) => async (dispatch) => {
-    console.log(uid);
-    api.logout().then(() => dispatch(logoutSuccess));
+    api.logout().then(() => {
+        dispatch(logoutSuccess());
+    });
 };
 
 export const loginUser = (formData) => async (dispatch) => {

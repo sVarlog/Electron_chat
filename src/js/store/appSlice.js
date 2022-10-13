@@ -4,17 +4,23 @@ const appSlice = createSlice({
     name: "App",
     initialState: {
         isOnline: window.navigator.onLine,
+        isDarkTheme: false,
+        playSound: true,
+        showNotifications: true,
     },
     reducers: {
         appOnline: (state, action) => {
-            return { isOnline: true };
+            return { ...state, isOnline: true };
         },
         appOffline: (state, action) => {
-            return { isOnline: false };
+            return { ...state, isOnline: false };
+        },
+        settingsUpdate: (state, action) => {
+            return { ...state, [action.setting]: action.value };
         },
     },
 });
 
-export const { appOnline, appOffline } = appSlice.actions;
+export const { appOnline, appOffline, settingsUpdate } = appSlice.actions;
 
 export default appSlice.reducer;

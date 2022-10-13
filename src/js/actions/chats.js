@@ -115,9 +115,3 @@ export const subscribeToMessages = (chatId) => (dispatch) => {
         );
     });
 };
-
-// export const registerMessageSubscription = (chatId, messageSub) => {
-//     return {
-
-//     }
-// }
