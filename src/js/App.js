@@ -30,6 +30,7 @@ const ChatApp = () => {
     const dispatch = useDispatch();
     const isOnline = useSelector(({ app }) => app.isOnline);
     const user = useSelector(({ auth }) => auth.user);
+    const { isDarkTheme } = useSelector(({ app }) => app.settings);
 
     useEffect(() => {
         dispatch(settingsInitialLoad());
@@ -61,7 +62,9 @@ const ChatApp = () => {
 
     return (
         <HashRouter>
-            <div className="content-wrapper">
+            <div
+                className={`content-wrapper ${isDarkTheme ? "dark" : "light"}`}
+            >
                 <Routes>
                     <Route path="/login" exact element={<Welcome />} />
 
