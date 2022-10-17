@@ -12,6 +12,7 @@ import { listenToConnectionChanges } from "./actions/app.js";
 import { LoadingView } from "./components/shared/LoadingView.js";
 import { ChatCreate } from "./views/ChatCreate.js";
 import { checkUserConnection } from "./actions/connection";
+import { settingsInitialLoad } from "./actions/settings.js";
 
 function RequireAuth({ children }) {
     const user = useSelector(({ auth }) => auth.user);
@@ -31,6 +32,7 @@ const ChatApp = () => {
     const user = useSelector(({ auth }) => auth.user);
 
     useEffect(() => {
+        dispatch(settingsInitialLoad());
         dispatch(listenToAuthChanges());
         dispatch(listenToConnectionChanges());
 

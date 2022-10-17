@@ -4,9 +4,11 @@ const appSlice = createSlice({
     name: "App",
     initialState: {
         isOnline: window.navigator.onLine,
-        isDarkTheme: false,
-        playSound: true,
-        showNotifications: true,
+        settings: {
+            isDarkTheme: false,
+            playSound: true,
+            showNotifications: true,
+        },
     },
     reducers: {
         appOnline: (state, action) => {
@@ -18,12 +20,25 @@ const appSlice = createSlice({
         settingsUpdate: (state, { payload: { name, checked } }) => {
             return {
                 ...state,
-                [name]: checked,
+                settings: { ...state.settings, [name]: checked },
+            };
+        },
+        loadInitialSettings: (state, action) => {
+            console.log({
+                ...state,
+                settings: { ...state.settings, ...action.payload },
+            });
+            console.log(action);
+            console.log("PAYLOAD INSIDE STORE");
+            return {
+                ...state,
+                settings: { ...state.settings, ...action.payload },
             };
         },
     },
 });
 
-export const { appOnline, appOffline, settingsUpdate } = appSlice.actions;
+export const { appOnline, appOffline, settingsUpdate, loadInitialSettings } =
+    appSlice.actions;
 
 export default appSlice.reducer;

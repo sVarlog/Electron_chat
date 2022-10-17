@@ -6,7 +6,7 @@ import { settingsUpdate } from "../store/appSlice";
 export const Settings = () => {
     const dispatch = useDispatch();
     const { isDarkTheme, playSound, showNotifications } = useSelector(
-        ({ app }) => app
+        ({ app }) => app.settings
     );
 
     const handleChange = ({ target: { checked, name } }) => {
