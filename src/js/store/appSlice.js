@@ -15,8 +15,11 @@ const appSlice = createSlice({
         appOffline: (state, action) => {
             return { ...state, isOnline: false };
         },
-        settingsUpdate: (state, action) => {
-            return { ...state, [action.setting]: action.value };
+        settingsUpdate: (state, { payload: { name, checked } }) => {
+            return {
+                ...state,
+                [name]: checked,
+            };
         },
     },
 });

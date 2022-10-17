@@ -10,7 +10,8 @@ export const Settings = () => {
     );
 
     const handleChange = ({ target: { checked, name } }) => {
-        dispatch(settingsUpdate(name, checked));
+        console.log(name, checked);
+        dispatch(settingsUpdate({ name, checked }));
     };
 
     return (

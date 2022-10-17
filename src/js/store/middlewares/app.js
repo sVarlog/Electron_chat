@@ -1,5 +1,5 @@
 import { Notifications } from "../../utils/notifications";
-import { appOffline, appOnline } from "../appSlice";
+import { appOffline, appOnline, settingsUpdate } from "../appSlice";
 import { logoutSuccess } from "../authSlice";
 
 export default (store) => (next) => (action) => {
@@ -18,6 +18,18 @@ export default (store) => (next) => (action) => {
                 subscriptions[messageSub]();
             });
         }
+    }
+
+    if (action.type === settingsUpdate().type) {
+        const { name, checked } = action.payload;
+        const currentSettings = localStorage.getItem("app-settings");
+        const parsedCurrentSettings = currentSettings
+            ? JSON.parse(currentSettings)
+            : {};
+
+        const settings = { ...parsedCurrentSettings, [name]: checked };
+        const stringifiedSettings = JSON.stringify(settings);
+        localStorage.setItem("app-settings", stringifiedSettings);
     }
 
     return next(action);
