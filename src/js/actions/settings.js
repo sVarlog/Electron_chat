@@ -1,7 +1,7 @@
 import { loadInitialSettings } from "../store/appSlice";
+import Storage from "../utils/storage";
 
 export const settingsInitialLoad = () => (dispatch) => {
-    const storedSettings = localStorage.getItem("app-settings");
-    const settings = storedSettings ? JSON.parse(storedSettings) : {};
+    const settings = Storage.getItem("app-settings");
     dispatch(loadInitialSettings(settings));
 };

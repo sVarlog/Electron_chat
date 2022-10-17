@@ -1,4 +1,5 @@
 import { Notifications } from "../../utils/notifications";
+import Storage from "../../utils/storage";
 import { appOffline, appOnline, settingsUpdate } from "../appSlice";
 import { logoutSuccess } from "../authSlice";
 
@@ -22,14 +23,9 @@ export default (store) => (next) => (action) => {
 
     if (action.type === settingsUpdate().type) {
         const { name, checked } = action.payload;
-        const currentSettings = localStorage.getItem("app-settings");
-        const parsedCurrentSettings = currentSettings
-            ? JSON.parse(currentSettings)
-            : {};
-
-        const settings = { ...parsedCurrentSettings, [name]: checked };
-        const stringifiedSettings = JSON.stringify(settings);
-        localStorage.setItem("app-settings", stringifiedSettings);
+        const currentSettings = Storage.getItem("app-settings");
+        const settings = { ...currentSettings, [name]: checked };
+        Storage.setItem("app-settings", settings);
     }
 
     return next(action);
