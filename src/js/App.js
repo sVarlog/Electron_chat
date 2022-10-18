@@ -30,7 +30,7 @@ const ChatApp = () => {
     const dispatch = useDispatch();
     const isOnline = useSelector(({ app }) => app.isOnline);
     const user = useSelector(({ auth }) => auth.user);
-    const { isDarkTheme } = useSelector(({ app }) => app.settings);
+    const { isDarkTheme } = useSelector(({ settings }) => settings);
 
     useEffect(() => {
         dispatch(settingsInitialLoad());

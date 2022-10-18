@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Loader } from "./Loader";
 
 export const LoadingView = () => {
-    const { isDarkTheme } = useSelector(({ app }) => app.settings);
+    const { isDarkTheme } = useSelector(({ settings }) => settings);
 
     return (
         <div className={isDarkTheme ? "dark" : "light"}>

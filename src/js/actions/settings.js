@@ -1,4 +1,4 @@
-import { loadInitialSettings } from "../store/appSlice";
+import { loadInitialSettings } from "../store/settingsSlice";
 import Storage from "../utils/storage";
 
 export const settingsInitialLoad = () => (dispatch) => {

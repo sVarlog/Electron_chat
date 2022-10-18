@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BaseLayout } from "../layouts/Base";
-import { settingsUpdate } from "../store/appSlice";
+import { settingsUpdate } from "../store/settingsSlice";
 
 export const Settings = () => {
     const dispatch = useDispatch();
     const { isDarkTheme, playSound, showNotifications } = useSelector(
-        ({ app }) => app.settings
+        ({ settings }) => settings
     );
 
     const handleChange = ({ target: { checked, name } }) => {
@@ -70,7 +70,7 @@ export const Settings = () => {
 
                             <button
                                 type="button"
-                                onClick={() => {}}
+                                onClick={() => electron.appApi.quitApp()}
                                 className="btn btn-danger"
                             >
                                 Quit App
