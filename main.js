@@ -25,7 +25,25 @@ if (isDev) {
     });
 }
 
-app.whenReady().then(() => {
+if (isDev) {
+    app.whenReady()
+        .then(() => require("electron-devtools-installer"))
+
+        // !!!!
+        // If I comment the following .then, error doesn't show up
+        // !!!!
+
+        .then(({ default: installExtension, REDUX_DEVTOOLS }) =>
+            installExtension(REDUX_DEVTOOLS, {
+                loadExtensionOptions: {
+                    allowFileAccess: true,
+                },
+            })
+        )
+        .catch((e) => console.error("Failed install extension:", e));
+}
+
+app.whenReady().then(async () => {
     createWindow();
 });
 

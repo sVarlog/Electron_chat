@@ -7,7 +7,6 @@ import { BackButton } from "./shared/BackButton";
 export const Navbar = ({ canGoBack, componentName }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log("navbar name", componentName);
 
     const user = useSelector(({ auth }) => auth.user);
 
@@ -43,10 +42,10 @@ export const Navbar = ({ canGoBack, componentName }) => {
                                 Hi {user.username}
                             </span>
 
-                            <img className="avatar" src={user.avatar} />
+                            <img className="avatar ml-2" src={user.avatar} />
 
                             <button
-                                onClick={() => dispatch(logout())}
+                                onClick={() => dispatch(logout(user.uid))}
                                 className="btn btn-outline-danger ml-2"
                             >
                                 Logout

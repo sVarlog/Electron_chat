@@ -51,7 +51,7 @@ export const authSlice = createSlice({
             };
         },
         logoutSuccess: (state, action) => {
-            console.log("logout");
+            console.log("LOGOOOOUT =-=-=-=-", action);
             return { user: null, isChecking: false };
         },
     },

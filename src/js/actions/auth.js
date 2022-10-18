@@ -17,8 +17,10 @@ export const registerUser = (formData) => async (dispatch) => {
     });
 };
 
-export const logout = () => (dispatch) => {
-    api.logout().then(() => dispatch(logoutSuccess));
+export const logout = (uid) => async (dispatch) => {
+    api.logout().then(() => {
+        dispatch(logoutSuccess());
+    });
 };
 
 export const loginUser = (formData) => async (dispatch) => {
@@ -28,12 +30,15 @@ export const loginUser = (formData) => async (dispatch) => {
     });
 };
 
+let uid = "";
+
 export const listenToAuthChanges = () => (dispatch) => {
     console.log("auth on init");
     dispatch(authOnInit());
-    api.onAuthStateChanges(async (authUser) => {
+    return api.onAuthStateChanges(async (authUser) => {
         if (authUser) {
             const userProfile = await api.getUserProfile(authUser.uid);
+            uid = userProfile.uid;
             dispatch(authOnSuccess(userProfile));
             console.log("we are authenticated");
         } else {

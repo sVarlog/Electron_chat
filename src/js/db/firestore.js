@@ -9,8 +9,11 @@ const firebaseConfig = {
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
 };
 
 const db = firebase.initializeApp(firebaseConfig).firestore();
 
-export { db };
+const { Timestamp } = firebase.firestore;
+
+export { db, Timestamp };

@@ -19,7 +19,7 @@ export const Welcome = () => {
     }
 
     if (user) {
-        return <Navigate to="/home" />;
+        return <Navigate to="/" />;
     }
 
     return (

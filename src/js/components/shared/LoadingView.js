@@ -1,11 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Loader } from "./Loader";
 
-export const LoadingView = ({ message = "Loading" }) => {
+export const LoadingView = () => {
+    const { isDarkTheme } = useSelector(({ settings }) => settings);
+
     return (
-        <div className="loading-screen">
-            <div className="loading-view">
-                <Loader />
+        <div className={isDarkTheme ? "dark" : "light"}>
+            <div className="loading-screen">
+                <div className="loading-view">
+                    <Loader />
+                </div>
             </div>
         </div>
     );

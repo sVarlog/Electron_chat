@@ -1,7 +1,19 @@
-import React, { Component } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BaseLayout } from "../layouts/Base";
+import { settingsUpdate } from "../store/settingsSlice";
 
 export const Settings = () => {
+    const dispatch = useDispatch();
+    const { isDarkTheme, playSound, showNotifications } = useSelector(
+        ({ settings }) => settings
+    );
+
+    const handleChange = ({ target: { checked, name } }) => {
+        console.log(name, checked);
+        dispatch(settingsUpdate({ name, checked }));
+    };
+
     return (
         <BaseLayout canGoBack componentName={Settings.name}>
             <div className="centered-view">
@@ -15,6 +27,8 @@ export const Settings = () => {
                             <div className="my-3">
                                 <div className="form-check">
                                     <input
+                                        onChange={handleChange}
+                                        checked={isDarkTheme}
                                         name="isDarkTheme"
                                         type="checkbox"
                                         className="form-check-input"
@@ -27,6 +41,8 @@ export const Settings = () => {
 
                                 <div className="form-check">
                                     <input
+                                        onChange={handleChange}
+                                        checked={showNotifications}
                                         name="showNotifications"
                                         type="checkbox"
                                         className="form-check-input"
@@ -39,6 +55,8 @@ export const Settings = () => {
 
                                 <div className="form-check">
                                     <input
+                                        onChange={handleChange}
+                                        checked={playSound}
                                         name="playSound"
                                         type="checkbox"
                                         className="form-check-input"
@@ -52,7 +70,7 @@ export const Settings = () => {
 
                             <button
                                 type="button"
-                                onClick={() => {}}
+                                onClick={() => electron.appApi.quitApp()}
                                 className="btn btn-danger"
                             >
                                 Quit App
