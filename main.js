@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification, Menu } = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
 
@@ -6,7 +6,7 @@ const createWindow = () => {
     const browserWindow = new BrowserWindow({
         width: 1200,
         height: 800,
-        backgroundColor: "white",
+        backgroundColor: "#6e707e",
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -29,10 +29,6 @@ if (isDev) {
     app.whenReady()
         .then(() => require("electron-devtools-installer"))
 
-        // !!!!
-        // If I comment the following .then, error doesn't show up
-        // !!!!
-
         .then(({ default: installExtension, REDUX_DEVTOOLS }) =>
             installExtension(REDUX_DEVTOOLS, {
                 loadExtensionOptions: {
@@ -44,6 +40,9 @@ if (isDev) {
 }
 
 app.whenReady().then(async () => {
+    const template = require("./utils/Menu").createTemplate(app);
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
     createWindow();
 });
 
