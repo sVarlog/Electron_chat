@@ -17,6 +17,7 @@ const createWindow = () => {
         width: 1200,
         height: 800,
         backgroundColor: "#6e707e",
+        show: false,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -27,21 +28,26 @@ const createWindow = () => {
     browserWindow.loadFile("index.html");
 
     isDev && browserWindow.webContents.openDevTools();
+
+    return browserWindow;
 };
 
-// const createSecondWindow = () => {
-//     const browserWindow = new BrowserWindow({
-//         width: 1200,
-//         height: 800,
-//         backgroundColor: "#6e707e",
-//         webPreferences: {
-//             nodeIntegration: false,
-//             contextIsolation: true,
-//         },
-//     });
+const createSplashWindow = () => {
+    const browserWindow = new BrowserWindow({
+        width: 400,
+        height: 200,
+        backgroundColor: "#6e707e",
+        frame: false,
+        transparent: true,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+        },
+    });
 
-//     browserWindow.loadFile("second.html");
-// };
+    browserWindow.loadFile("splash.html");
+    return browserWindow;
+};
 
 if (isDev) {
     require("electron-reload")(__dirname, {
@@ -77,8 +83,15 @@ app.whenReady().then(async () => {
     tray = new Tray(trayIcon);
     tray.setContextMenu(menu);
 
-    createWindow();
-    // createSecondWindow();
+    const splash = createSplashWindow();
+    const mainApp = createWindow();
+
+    mainApp.once("ready-to-show", () => {
+        setTimeout(() => {
+            splash.destroy();
+            mainApp.show();
+        }, 3000);
+    });
 });
 
 ipcMain.on("notify", (e, msg) => {
