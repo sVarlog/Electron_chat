@@ -1,6 +1,16 @@
-const { app, BrowserWindow, ipcMain, Notification, Menu } = require("electron");
+const {
+    app,
+    BrowserWindow,
+    ipcMain,
+    Notification,
+    Menu,
+    Tray,
+} = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
+
+const docIcon = path.join(__dirname, "assets", "img", "react_app_logo.png");
+const trayIcon = path.join(__dirname, "assets", "img", "react_icon.png");
 
 const createWindow = () => {
     const browserWindow = new BrowserWindow({
@@ -18,6 +28,20 @@ const createWindow = () => {
 
     isDev && browserWindow.webContents.openDevTools();
 };
+
+// const createSecondWindow = () => {
+//     const browserWindow = new BrowserWindow({
+//         width: 1200,
+//         height: 800,
+//         backgroundColor: "#6e707e",
+//         webPreferences: {
+//             nodeIntegration: false,
+//             contextIsolation: true,
+//         },
+//     });
+
+//     browserWindow.loadFile("second.html");
+// };
 
 if (isDev) {
     require("electron-reload")(__dirname, {
@@ -39,11 +63,22 @@ if (isDev) {
         .catch((e) => console.error("Failed install extension:", e));
 }
 
+if (process.platform === "darwin") {
+    app.dock.setIcon(docIcon);
+}
+
+let tray = null;
+
 app.whenReady().then(async () => {
     const template = require("./utils/Menu").createTemplate(app);
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
+
+    tray = new Tray(trayIcon);
+    tray.setContextMenu(menu);
+
     createWindow();
+    // createSecondWindow();
 });
 
 ipcMain.on("notify", (e, msg) => {

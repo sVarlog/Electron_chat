@@ -2,14 +2,6 @@ exports.createTemplate = (app) => {
     return [
         {
             label: process.platform === "darwin" ? app.getName() : "Menu",
-            submenu: [
-                {
-                    label: "Exit",
-                    click: () => {
-                        app.quit();
-                    },
-                },
-            ],
         },
         {
             label: "Edit",
@@ -137,6 +129,12 @@ exports.createTemplate = (app) => {
                     },
                 },
             ],
+        },
+        {
+            label: "Exit",
+            click: () => {
+                app.quit();
+            },
         },
     ];
 };
