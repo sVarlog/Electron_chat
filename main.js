@@ -7,7 +7,6 @@ const {
     Tray,
 } = require("electron");
 const path = require("path");
-const isDev = !app.isPackaged;
 
 const docIcon = path.join(__dirname, "assets", "img", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "img", "react_icon.png");
@@ -27,7 +26,8 @@ const createWindow = () => {
 
     browserWindow.loadFile("index.html");
 
-    isDev && browserWindow.webContents.openDevTools();
+    // for dev
+    // browserWindow.webContents.openDevTools();
 
     return browserWindow;
 };
@@ -48,25 +48,23 @@ const createSplashWindow = () => {
     return browserWindow;
 };
 
-if (isDev) {
-    require("electron-reload")(__dirname, {
-        electron: path.join(__dirname, "node_modules", ".bin", "electron"),
-    });
-}
+// for dev
+// require("electron-reload")(__dirname, {
+//     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+// });
 
-if (isDev) {
-    app.whenReady()
-        .then(() => require("electron-devtools-installer"))
+// for dev
+// app.whenReady()
+//     .then(() => require("electron-devtools-installer"))
 
-        .then(({ default: installExtension, REDUX_DEVTOOLS }) =>
-            installExtension(REDUX_DEVTOOLS, {
-                loadExtensionOptions: {
-                    allowFileAccess: true,
-                },
-            })
-        )
-        .catch((e) => console.error("Failed install extension:", e));
-}
+//     .then(({ default: installExtension, REDUX_DEVTOOLS }) =>
+//         installExtension(REDUX_DEVTOOLS, {
+//             loadExtensionOptions: {
+//                 allowFileAccess: true,
+//             },
+//         })
+//     )
+//     .catch((e) => console.error("Failed install extension:", e));
 
 if (process.platform === "darwin") {
     app.dock.setIcon(docIcon);
