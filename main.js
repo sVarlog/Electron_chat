@@ -1,12 +1,22 @@
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const {
+    app,
+    BrowserWindow,
+    ipcMain,
+    Notification,
+    Menu,
+    Tray,
+} = require("electron");
 const path = require("path");
-const isDev = !app.isPackaged;
+
+const docIcon = path.join(__dirname, "assets", "img", "react_app_logo.png");
+const trayIcon = path.join(__dirname, "assets", "img", "react_icon.png");
 
 const createWindow = () => {
     const browserWindow = new BrowserWindow({
         width: 1200,
         height: 800,
-        backgroundColor: "white",
+        backgroundColor: "#6e707e",
+        show: false,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -16,35 +26,69 @@ const createWindow = () => {
 
     browserWindow.loadFile("index.html");
 
-    isDev && browserWindow.webContents.openDevTools();
+    // for dev
+    // browserWindow.webContents.openDevTools();
+
+    return browserWindow;
 };
 
-if (isDev) {
-    require("electron-reload")(__dirname, {
-        electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+const createSplashWindow = () => {
+    const browserWindow = new BrowserWindow({
+        width: 400,
+        height: 200,
+        frame: false,
+        transparent: true,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+        },
     });
+
+    browserWindow.loadFile("splash.html");
+    return browserWindow;
+};
+
+// for dev
+// require("electron-reload")(__dirname, {
+//     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+// });
+
+// for dev
+// app.whenReady()
+//     .then(() => require("electron-devtools-installer"))
+
+//     .then(({ default: installExtension, REDUX_DEVTOOLS }) =>
+//         installExtension(REDUX_DEVTOOLS, {
+//             loadExtensionOptions: {
+//                 allowFileAccess: true,
+//             },
+//         })
+//     )
+//     .catch((e) => console.error("Failed install extension:", e));
+
+if (process.platform === "darwin") {
+    app.dock.setIcon(docIcon);
 }
 
-if (isDev) {
-    app.whenReady()
-        .then(() => require("electron-devtools-installer"))
-
-        // !!!!
-        // If I comment the following .then, error doesn't show up
-        // !!!!
-
-        .then(({ default: installExtension, REDUX_DEVTOOLS }) =>
-            installExtension(REDUX_DEVTOOLS, {
-                loadExtensionOptions: {
-                    allowFileAccess: true,
-                },
-            })
-        )
-        .catch((e) => console.error("Failed install extension:", e));
-}
+let tray = null;
 
 app.whenReady().then(async () => {
-    createWindow();
+    const template = require("./utils/Menu").createTemplate(app);
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+
+    tray = new Tray(trayIcon);
+    tray.setContextMenu(menu);
+
+    const splash = createSplashWindow();
+    const mainApp = createWindow();
+
+    mainApp.once("ready-to-show", () => {
+        setTimeout(() => {
+            splash.destroy();
+            mainApp.show();
+        }, 1500);
+    });
 });
 
 ipcMain.on("notify", (e, msg) => {
